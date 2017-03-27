@@ -128,7 +128,7 @@ var ships = [
               }
             }else if(ships[i].name[0]=='s'){
               opponent.sHits++;
-              if(opponent.aHits==3){
+              if(opponent.sHits==3){
                 $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Submarine!");
               }
             }
