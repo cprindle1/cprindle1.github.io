@@ -10,6 +10,20 @@
   float: left;
   border: 1px solid gray;
 }
+.hit{
+  background-color: darkred;
+  width: 48px;
+  height: 48px;
+  float: left;
+  border: 1px solid gray;
+}
+.miss{
+  background-color: white;
+  width: 48px;
+  height: 48px;
+  float: left;
+  border: 1px solid gray;
+}
 
 /*.open:hover{
   background-color: none;
@@ -26,9 +40,9 @@
 .ships:hover{
   cursor: pointer;
 }
-button:hover{
+/*button:hover{
     cursor: pointer;
-}
+}*/
 .placed{
   background-color: darkgray;
   width: 48px;
