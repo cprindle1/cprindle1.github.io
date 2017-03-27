@@ -54,7 +54,7 @@
   text-transform: uppercase;
 }
 #a_carrier{
-  /*background-image: linear-gradient(90deg, red, red 50%, darkgray 50%);*/
+  /*background-image: linear-gradient(90deg, darkred, darkred 40%, darkgray 40%, darkgray);*/
 
   width: 250px;
   height: 50px;

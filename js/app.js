@@ -37,12 +37,26 @@ var ships = [
   var currentShip = ships[0];
   var twoClicks = false;
   var player = function(name){
+    this.aHits=0;
+    this.bHits=0;
+    this.cHits=0;
+    this.sHits=0;
+    this.dHits=0;
     this.name = name;
     this.shipsPlaced = 0;
     this.hits=0;
     this.board=[{status:0, ship:""}];
     this.colorBoard = function(){
-      console.log("board should be cleared");
+      console.log('linear-gradient(90deg, darkred '+ (this.aHits/5)*100 +'%, darkgray '+ ((5-this.aHits)/5)*100 +'%)');
+
+// linear-gradient(90deg, darkred, darkred 40%, darkgray 40%, darkgray);
+
+      $('#a_carrier').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.aHits/5)*100 +'%, darkgray '+ (this.aHits/5)*100 +'%, darkgray)');
+      $('#battleship').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.bHits/4)*100 +'%, darkgray '+ (this.bHits/4)*100 +'%, darkgray)');
+      $('#cruiser').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.cHits/3)*100 +'%, darkgray '+ (this.cHits/3)*100 +'%, darkgray)');
+      $('#submarine').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.sHits/3)*100 +'%, darkgray '+ (this.sHits/3)*100 +'%, darkgray)');
+      $('#destroyer').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.dHits/2)*100 +'%, darkgray '+ (this.dHits/2)*100 +'%, darkgray)');
+
       for(var i=0; i<opponent.board.length; i++){
         for(var j=0; j<opponent.board[i].length; j++){
           if(opponent.board[j][i].status==2){
@@ -59,8 +73,11 @@ var ships = [
       var y=0;
       x=$(this).attr('id')[1]-1;
       y=$(this).attr('id')[0].charCodeAt()-98;
-      console.log(x);
-      console.log(y);
+      if($(this).attr('id').length==3){
+        x=9;
+      }
+
+
       $('.open').off();
       if(opponent.board[x][y].status==0){
         opponent.board[x][y].status=2;
@@ -68,15 +85,37 @@ var ships = [
         // $(this).css('background-color', 'white');
       }else if(opponent.board[x][y].status==1){
         opponent.board[x][y].status=3;
+        currentPlayer.hits++;
         // $(this).css('background-color', 'darkred');
         $(this).attr('class', 'hit');
-
-      }else{
+        for(var i=0; i<ships.length; i++){
+          console.log(opponent.board[x][y].ship);
+          if(opponent.board[x][y].ship==ships[i].name){
+            if(ships[i].name[0]=='a'){
+              console.log('aHit')
+              opponent.aHits++;
+            }else if(ships[i].name[0]=='b'){
+              opponent.bHits++;
+            }else if(ships[i].name[0]=='c'){
+              opponent.cHits++;
+            }else if(ships[i].name[0]=='d'){
+              opponent.dHits++;
+            }else if(ships[i].name[0]=='s'){
+              opponent.sHits++;
+            }
+          }
+        }
       }
       $('.ships').hide();
       $('#proceed').text('next player')
       $('#proceed').show();
       $('#status').hide();
+      if(currentPlayer.hits==17){
+        $('#bottom').html('<br><br>'+currentPlayer.name+' Wins!');
+        $('.open').off();
+        $('#proceed').hide();
+
+      }
       if(currentPlayer==player1){
         currentPlayer=player2;
         opponent=player1;
@@ -99,7 +138,6 @@ var takeTurns = function(){
   }else {
     opponent=player1;
   }
-  if(currentPlayer.hits<17){
     showShips();
     $('#proceed').hide();
     $('#status').show();
@@ -112,7 +150,6 @@ var takeTurns = function(){
     });
     $('#bottom').html('<br><br>'+currentPlayer.name+' Fire on your Opponent!');
     $('.open').on('click', currentPlayer.fire);
-  }
 }
 var turn90 = function(){
   if(shipDirection == 'horizontal'){
@@ -207,19 +244,6 @@ var reset = function(){
   if(rounds<2){
     $('#rotateShip').show();
   }
-  // else{
-  //   $('#status').show();
-  //   var $select = $('.ships');
-  //   $select.off();
-  //   $select.css('cursor', 'default');
-  //   $('.open').hover(function(){
-  //     $(this).css('background-color', 'darkred')},function(){
-  //     $(this).css('background-color', '')
-  //   });
-  //   // $('#topBox').text('Fleet Status');
-  //   $('#bottom').html('<br><br>Fire on your Opponent!');
-  //   $('.open').on('click', takeTurns);
-  // }
 }
 //allow user to select ship
 var shipSelector = function(){
