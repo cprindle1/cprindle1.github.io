@@ -3,11 +3,14 @@ $(function(){
   var $currentShipElm;
   var $rotateShip = $('#rotateShip');
   var $placeHover = $('.open');
+  $placeHover.css('cursor', 'pointer');
+  var $resetBoard =$('#resetBoard');
 
 
 //listeners====================================================
 $rotateShip.on('click', turn90);
 $shipSelect.on('click', shipSelector);
+$resetBoard.on('click', completeReset);
 initializeGame();
 })
 //variable declaration==========================================
@@ -46,16 +49,27 @@ var ships = [
     this.shipsPlaced = 0;
     this.hits=0;
     this.board=[{status:0, ship:""}];
+    this.reset = function(){
+      this.aHits=0;
+      this.bHits=0;
+      this.cHits=0;
+      this.sHits=0;
+      this.dHits=0;
+      this.name = name;
+      this.shipsPlaced = 0;
+      this.hits=0;
+      this.board=[{status:0, ship:""}];
+    }
     this.colorBoard = function(){
-      console.log('linear-gradient(90deg, darkred '+ (this.aHits/5)*100 +'%, darkgray '+ ((5-this.aHits)/5)*100 +'%)');
+      console.log('linear-gradient(90deg, darkred '+ (this.aHits/5)*100 +'%, gray '+ ((5-this.aHits)/5)*100 +'%)');
 
-// linear-gradient(90deg, darkred, darkred 40%, darkgray 40%, darkgray);
+// linear-gradient(90deg, darkred, darkred 40%, gray 40%, gray);
 
-      $('#a_carrier').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.aHits/5)*100 +'%, darkgray '+ (this.aHits/5)*100 +'%, darkgray)');
-      $('#battleship').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.bHits/4)*100 +'%, darkgray '+ (this.bHits/4)*100 +'%, darkgray)');
-      $('#cruiser').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.cHits/3)*100 +'%, darkgray '+ (this.cHits/3)*100 +'%, darkgray)');
-      $('#submarine').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.sHits/3)*100 +'%, darkgray '+ (this.sHits/3)*100 +'%, darkgray)');
-      $('#destroyer').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.dHits/2)*100 +'%, darkgray '+ (this.dHits/2)*100 +'%, darkgray)');
+      $('#a_carrier').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.aHits/5)*100 +'%, gray '+ (this.aHits/5)*100 +'%, gray)');
+      $('#battleship').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.bHits/4)*100 +'%, gray '+ (this.bHits/4)*100 +'%, gray)');
+      $('#cruiser').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.cHits/3)*100 +'%, gray '+ (this.cHits/3)*100 +'%, gray)');
+      $('#submarine').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.sHits/3)*100 +'%, gray '+ (this.sHits/3)*100 +'%, gray)');
+      $('#destroyer').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.dHits/2)*100 +'%, gray '+ (this.dHits/2)*100 +'%, gray)');
 
       for(var i=0; i<opponent.board.length; i++){
         for(var j=0; j<opponent.board[i].length; j++){
@@ -94,14 +108,29 @@ var ships = [
             if(ships[i].name[0]=='a'){
               console.log('aHit')
               opponent.aHits++;
+              if(opponent.aHits==5){
+                $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Aircraft Carrier!");
+              }
             }else if(ships[i].name[0]=='b'){
               opponent.bHits++;
+              if(opponent.bHits==4){
+                $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Battleship!");
+              }
             }else if(ships[i].name[0]=='c'){
               opponent.cHits++;
+              if(opponent.cHits==3){
+                $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Cruiser!");
+              }
             }else if(ships[i].name[0]=='d'){
               opponent.dHits++;
+              if(opponent.dHits==2){
+                $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Destroyer!");
+              }
             }else if(ships[i].name[0]=='s'){
               opponent.sHits++;
+              if(opponent.aHits==3){
+                $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Submarine!");
+              }
             }
           }
         }
@@ -144,6 +173,8 @@ var takeTurns = function(){
     var $select = $('.ships');
     $select.off();
     $select.css('cursor', 'default');
+
+    $('.open').css('cursor','pointer');
     $('.open').hover(function(){
       $(this).css('background-color', 'darkred')},function(){
       $(this).css('background-color', '')
@@ -234,6 +265,8 @@ var placeShip = function(){
   }
   twoClicks=false;
   $placeHover.off();
+  $placeHover.css('cursor', 'default');
+
 }
 
 var reset = function(){
@@ -245,10 +278,34 @@ var reset = function(){
     $('#rotateShip').show();
   }
 }
+var completeReset = function(){
+  rounds=0;
+  $('.open').remove();
+  $('.hit').remove();
+  $('.miss').remove();
+  $('.placed').remove();
+  $('.boardBorder').remove();
+  $('#status').hide();
+  $('#rotateShip').show();
+  $('#proceed').hide();
+  $('.ships').css('background-image', '');
+  $('#rotateShip').on('click', turn90);
+  $('.ships').on('click', shipSelector);
+  $('#resetBoard').on('click', completeReset);
+  $('.ships').css('cursor', 'pointer');
+  player1.reset();
+  player2.reset();
+  currentPlayer=player1;
+  showShips();
+  initializeGame();
+
+}
 //allow user to select ship
 var shipSelector = function(){
   if(twoClicks){
     $placeHover.off();
+    $placeHover.css('cursor', 'default');
+
   }
   twoClicks=true;
   var length = 0;
@@ -258,6 +315,7 @@ var shipSelector = function(){
     }
   }
   $placeHover = $('.open');
+  $placeHover.css('cursor', 'pointer');
   $placeHover.hover(function(){
     if(shipDirection=='horizontal'){
       var id=$(this).attr('id');
