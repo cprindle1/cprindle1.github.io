@@ -1,0 +1,182 @@
+*{
+  background-color: darkblue;
+  font-family: Helvetica, Charcoal, sans-serif;
+
+}
+.open{
+  background-color: lightblue;
+  width: 48px;
+  height: 48px;
+  float: left;
+  border: 1px solid gray;
+}
+
+/*.open:hover{
+  background-color: none;
+}*/
+.ships{
+  text-align: center;
+  line-height: 50px;
+  margin: 2px;
+  font-family: sans-serif;
+  border-radius: 4px;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+.ships:hover{
+  cursor: pointer;
+}
+button:hover{
+    cursor: pointer;
+}
+.placed{
+  background-color: darkgray;
+  width: 48px;
+  height: 48px;
+  border: 1px solid gray;
+  float: left;
+  text-align: center;
+  line-height: 50px;
+  text-transform: uppercase;
+}
+#a_carrier{
+  /*background-image: linear-gradient(90deg, red, red 50%, darkgray 50%);*/
+
+  width: 250px;
+  height: 50px;
+  background-color: gray;
+  border: 1px solid black;
+}
+#battleship{
+  width: 200px;
+  height: 50px;
+  background-color: gray;
+  border: 1px solid black;
+}
+#cruiser{
+  width: 150px;
+  height: 50px;
+  background-color: gray;
+  border: 1px solid black;
+}
+#submarine{
+  width: 150px;
+  height: 50px;
+  background-color: gray;
+  border: 1px solid black;
+}
+#destroyer{
+  width: 100px;
+  height: 50px;
+  background-color: gray;
+  border: 1px solid black;
+}
+#container{
+  margin: auto;
+  width: 850px;
+  display: flex;
+  border-radius: 10px;
+  border: 5px black solid;
+}
+#rotateShip{
+  color: white;
+  margin-right: 20px;
+  background-color: gray;
+  border-radius: 2px;
+  border: 1px solid black;
+  position: absolute;
+  right: 5px;
+  top: 150px;
+}
+#title{
+  text-align: center;
+  font-family: Helvetica, Charcoal, sans-serif;
+  color: white;
+  text-shadow: 3px 2px black;
+  text-transform: uppercase;
+}
+#board{
+  width: 550px;
+  height: 550px;
+  /*background-color: white;*/
+  /*border: 2px solid black;*/
+}
+
+#left{
+  width: 300px;
+  height: 550px;
+  background-color: lightgray;
+  border: 2px solid black;
+  overflow: hidden;
+}
+#right{
+  /*overflow: hidden;*/
+  width: 550px;
+  height: 550px;
+  border: 2px solid black;*/
+}
+.UIBox{
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  background-color: lightgray;
+  border: 2px solid black;
+  position: relative;
+  text-align: center;
+  font-family: Helvetica, Charcoal, sans-serif;
+  line-height: 20px;
+}
+.boardBorder{
+  background-color: gray;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  width: 48px;
+  height: 48px;
+  float: left;
+  text-transform: uppercase;
+  border: 1px solid black;
+  text-shadow: 2px 2px black;
+}
+#resetBoard{
+  text-align: center;
+  margin: auto;
+  background-color: gray;
+  color: white;
+  border: 5px solid black;
+  border-radius: 3px;
+  position: absolute;
+  right: 45%;
+}
+#proceed{
+  display: none;
+  margin-right: 20px;
+  background-color: gray;
+  color: white;
+  border-radius: 2px;
+  border: 1px solid black;
+  position: absolute;
+  right: 90px;
+  top: 150px;
+}
+#bottom{
+  /*background-image: url("../img/pegs.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;*/
+  /*text-shadow: 2px 2px black;
+  color: white;*/
+  font-weight: bold;
+  background-color:
+}
+#status{
+  display: none;
+  margin-right: 20px;
+  background-color: gray;
+  color: white;
+  border-radius: 2px;
+  border: 1px solid black;
+  position: absolute;
+  right: 5px;
+  top: 150px;
+  padding: 3px;
+}

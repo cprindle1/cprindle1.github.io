@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+    <link rel = "stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <h1 id="title">Battleship</h1>
+    <div id="container">
+      <div id="left">
+        <div id="topBox" class="UIBox">
+          <div id="a_carrier" class="ships">Aircraft Carrier</div>
+          <div id="battleship" class="ships">Battleship</div>
+          <div id="cruiser" class="ships">Cruiser</div>
+          <button id="rotateShip">Rotate 90 deg</button>
+          <button id="proceed">Next Player</button>
+          <div id="status">Fleet Status</div>
+          <div id="submarine" class="ships">Submarine</div>
+          <div id="destroyer" class="ships">Destroyer</div>
+        </div>
+        <div id="bottom" class="UIBox"><br><br>Take turns firing on your opponent.  The first player to sink all of the opposing ships is the winner!</div>
+      </div>
+      <div id="right">
+        <div id="board"></div>
+      </div>
+    </div>
+    <button id="resetBoard">Reset Game</button>
+  </body>
+</html>
