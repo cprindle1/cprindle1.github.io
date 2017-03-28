@@ -3,12 +3,20 @@ $(function(){
   var $currentShipElm;
   var $rotateShip = $('#rotateShip');
   var $placeHover = $('.open');
-  $placeHover.css('cursor', 'pointer');
   var $resetBoard =$('#resetBoard');
+  var $playerSelect1=$('#1player');
+  var $playerSelect2=$('#2player');
+
+
 //listeners====================================================
+$placeHover.css('cursor', 'pointer');
 $rotateShip.on('click', turn90);
 $shipSelect.on('click', shipSelector);
 $resetBoard.on('click', completeReset);
+$playerSelect1.on('click', closeNav);
+$playerSelect1.css('cursor', 'pointer');
+$playerSelect2.on('click', closeNav);
+$playerSelect2.css('cursor', 'pointer');
 initializeGame();
 })
 //variable declaration==========================================
@@ -75,6 +83,7 @@ var ships = [
       }
     }
     this.fire=function(){
+      var winner=false;
       $('.open').css('cursor', 'default');
       $(this).css('background-color','');
       var x=0;
@@ -126,21 +135,31 @@ var ships = [
           }
         }
       }
-      $('.ships').hide();
-      $('#proceed').text('next player')
-      $('#proceed').show();
-      $('#status').hide();
+      if(players=='2player'){
+        $('.ships').hide();
+        $('#proceed').text('next player')
+        $('#proceed').show();
+        $('#status').hide();
+      }
       if(currentPlayer.hits==17){
         $('#bottom').html('<br><br>'+currentPlayer.name+' Wins!');
         $('.open').off();
         $('#proceed').hide();
+        winner=true;
       }
       if(currentPlayer==player1){
         currentPlayer=player2;
         opponent=player1;
-      }else{
+      }else if(players!='1player'){
         currentPlayer=player1;
         opponent=player2;
+      }
+      if(players=='1player' && !winner){
+        $('#proceed').show();
+        $('.ships').hide();
+        $('#status').hide();
+        $('#proceed').text("Computer's turn")
+        $('#proceed').on('click', computerFire)
       }
     }
   }
@@ -149,37 +168,43 @@ var ships = [
   var currentPlayer = player1;
   var opponent = player2;
 //end variable declaration==========================================
+function closeNav() {
+    players = $(this).attr('id');
+    document.getElementById("myNav").style.width = "0%";
+}
 var takeTurns = function(){
-  $('.open').css('cursor', 'pointer');
-  clearBoard();
-  currentPlayer.colorBoard();
-  if(currentPlayer==player1){
-    opponent=player2;
-    $('html').css('background-color', 'darkblue');
-    $('body').css('background-color', 'darkblue');
-    $('h1').css('background-color', 'darkblue');
-  }else {
-    opponent=player1;
-    $('html').css('background-color', 'darkred');
-    $('body').css('background-color', 'darkred');
-    $('h1').css('background-color', 'darkred');
+  if(currentPlayer==player1 || (currentPlayer==player2 && players!='1player')){
+    $('.open').css('cursor', 'pointer');
+    clearBoard();
+    currentPlayer.colorBoard();
+    if(currentPlayer==player1){
+      opponent=player2;
+      $('html').css('background-color', 'darkblue');
+      $('body').css('background-color', 'darkblue');
+      $('h1').css('background-color', 'darkblue');
+    }else {
+      opponent=player1;
+      $('html').css('background-color', 'darkred');
+      $('body').css('background-color', 'darkred');
+      $('h1').css('background-color', 'darkred');
 
-  }
+    }
     showShips();
     $('#proceed').hide();
     $('#status').show();
     var $select = $('.ships');
     $select.off();
     $select.css('cursor', 'default');
-
     $('.open').css('cursor','pointer');
     $('.open').hover(function(){
       $(this).css('background-color', 'darkred')},function(){
-      $(this).css('background-color', '')
-    });
-    $('#bottom').html('<br><br>'+currentPlayer.name+', Fire on your Opponent!');
-    $('.open').on('click', currentPlayer.fire);
-}
+        $(this).css('background-color', '')
+      });
+      $('#bottom').html('<br><br>'+currentPlayer.name+', Fire on your Opponent!');
+      $('.open').on('click', currentPlayer.fire);
+    }
+
+  }
 var turn90 = function(){
   if(shipDirection == 'horizontal'){
     shipDirection = 'vertical';
@@ -187,6 +212,121 @@ var turn90 = function(){
     shipDirection = 'horizontal';
   }
 }
+var computerFire = function(){
+  clearBoard();
+  currentPlayer.colorBoard();
+
+  $('#proceed').off();
+  console.log('computerFire');
+  var shot=false;
+  while(!shot){
+    console.log("firing");
+    var x = Math.floor((Math.random()*10));
+    var y = Math.floor((Math.random()*10));
+    if(player1.board[x][y].status==1){
+      player1.board[x][y].status=3;
+      $('#bottom').text('Computer Fires - HIT!');
+      console.log('#'+String.fromCharCode(y+98)+(x+1));
+      $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newhit');
+      shot=true;
+    }else if(player1.board[x][y].status==0){
+      player1.board[x][y].status=2;
+      $('#bottom').text('Computer Fires - MISS!');
+      console.log('#'+String.fromCharCode(y+98)+(x+1));
+      $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newmiss');
+      shot=true;
+    }
+  }
+  for(var i=0; i<ships.length; i++){
+    if(opponent.board[x][y].ship==ships[i].name){
+      if(ships[i].name[0]=='a'){
+        opponent.aHits++;
+        if(opponent.aHits==5){
+          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Aircraft Carrier!");
+        }
+      }else if(ships[i].name[0]=='b'){
+        opponent.bHits++;
+        if(opponent.bHits==4){
+          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Battleship!");
+        }
+      }else if(ships[i].name[0]=='c'){
+        opponent.cHits++;
+        if(opponent.cHits==3){
+          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Cruiser!");
+        }
+      }else if(ships[i].name[0]=='d'){
+        opponent.dHits++;
+        if(opponent.dHits==2){
+          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Destroyer!");
+        }
+      }else if(ships[i].name[0]=='s'){
+        opponent.sHits++;
+        if(opponent.sHits==3){
+          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Submarine!");
+        }
+      }
+    }
+  }
+  $('#proceed').text('Your Turn');
+  $('#proceed').show();
+  $('#proceed').on('click', takeTurns);
+if(currentPlayer.hits==17){
+  $('#bottom').html('<br><br>'+currentPlayer.name+' Wins!');
+  $('.open').off();
+  $('#proceed').hide();
+  $('#proceed').off();
+}
+  currentPlayer=player1;
+  opponent=player2;
+}
+var computerPlace = function(){
+  for(var i=0; i<5; i++){
+    var placed=false;
+    while(!placed){
+      var canPlace=true;
+      var x = Math.floor((Math.random()*10));
+      var y = Math.floor((Math.random()*10));
+      var direction = Math.floor((Math.random()*2));
+      if(direction == 0){
+        for(var j = 0; j<ships[i].length; j++){
+          if((x+ships[i].length)>player2.board.length){
+            canPlace=false;
+          }else if(player2.board[x+j][y].status==1){
+              canPlace=false;
+            }
+        }
+        if(canPlace){
+          placed=true;
+          for(var k=0; k<ships[i].length; k++){
+            player2.board[x+k][y].status=1;
+            player2.board[x+k][y].ship=ships[i].name;
+          }
+      }
+      }else{
+        for(var j = 0; j<ships[i].length; j++){
+          if((y+ships[i].length)>player2.board.length){
+            canPlace=false;
+          }else if(player2.board[x][y+j].status==1){
+              canPlace=false;
+          }
+        }
+        if(canPlace){
+          placed=true;
+          for(var k=0; k<ships[i].length; k++){
+            player2.board[x][y+k].status=1;
+            player2.board[x][y+k].ship=ships[i].name;
+          }
+      }
+      }
+    }
+  }
+  $('#proceed').off('');
+  $('#proceed').on('click', takeTurns);
+  $('#proceed').text('Start Game');
+  $('#bottom').text('Computer opponent has placed ships');
+
+}
+
 var placeShip = function(){
   $('.open').css('background-color',"");
   var position = $(this).attr('id');
@@ -247,18 +387,26 @@ var placeShip = function(){
     }
   }
   if(currentPlayer.shipsPlaced==5){
+    if(players=='1player'){
+      console.log('1player');
+      $('#rotateShip').hide();
+      $('#proceed').off('');
+      $('#proceed').on('click', computerPlace);
+      $('#proceed').text("Computer Place Ships");
+      $('#proceed').show()
+    }else{
     currentPlayer=player2;
     $('#rotateShip').hide();
     $('#proceed').show()
     $('#proceed').on('click', reset);
     rounds++;
     if(rounds==2){
-      clearBoard();
       $('#proceed').off('');
       $('#proceed').on('click', takeTurns);
       $('#proceed').text("Start Game");
       currentPlayer=player1;
     }
+  }
   }
   twoClicks=false;
   $placeHover.off();
@@ -280,25 +428,7 @@ var reset = function(){
   }
 }
 var completeReset = function(){
-  rounds=0;
-  $('.open').remove();
-  $('.hit').remove();
-  $('.miss').remove();
-  $('.placed').remove();
-  $('.boardBorder').remove();
-  $('#status').hide();
-  $('#rotateShip').show();
-  $('#proceed').hide();
-  $('.ships').css('background-image', '');
-  $('#rotateShip').on('click', turn90);
-  $('.ships').on('click', shipSelector);
-  $('#resetBoard').on('click', completeReset);
-  $('.ships').css('cursor', 'pointer');
-  player1.reset();
-  player2.reset();
-  currentPlayer=player1;
-  showShips();
-  initializeGame();
+  location.reload();
 }
 //allow user to select ship
 var shipSelector = function(){
