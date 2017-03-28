@@ -82,6 +82,7 @@ var ships = [
       }
     }
     this.fire=function(){
+      $('.open').css('cursor', 'default');
       $(this).css('background-color','');
       var x=0;
       var y=0;
@@ -96,17 +97,16 @@ var ships = [
       if(opponent.board[x][y].status==0){
         opponent.board[x][y].status=2;
         $(this).attr('class', 'miss');
+        $('#bottom').html('<br><br>'+currentPlayer.name+', MISS!');
         // $(this).css('background-color', 'white');
       }else if(opponent.board[x][y].status==1){
         opponent.board[x][y].status=3;
         currentPlayer.hits++;
-        // $(this).css('background-color', 'darkred');
+        $('#bottom').html('<br><br>'+currentPlayer.name+', HIT!');
         $(this).attr('class', 'hit');
         for(var i=0; i<ships.length; i++){
-          console.log(opponent.board[x][y].ship);
           if(opponent.board[x][y].ship==ships[i].name){
             if(ships[i].name[0]=='a'){
-              console.log('aHit')
               opponent.aHits++;
               if(opponent.aHits==5){
                 $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Aircraft Carrier!");
@@ -160,12 +160,22 @@ var ships = [
   var opponent = player2;
 //end variable declaration==========================================
 var takeTurns = function(){
+  $('.open').css('cursor', 'pointer');
   clearBoard();
   currentPlayer.colorBoard();
   if(currentPlayer==player1){
     opponent=player2;
+    $('html').css('background-color', 'darkblue');
+    $('body').css('background-color', 'darkblue');
+    $('h1').css('background-color', 'darkblue');
+
   }else {
     opponent=player1;
+    $('html').css('background-color', 'darkred');
+    $('body').css('background-color', 'darkred');
+    $('h1').css('background-color', 'darkred');
+
+
   }
     showShips();
     $('#proceed').hide();
@@ -179,7 +189,7 @@ var takeTurns = function(){
       $(this).css('background-color', 'darkred')},function(){
       $(this).css('background-color', '')
     });
-    $('#bottom').html('<br><br>'+currentPlayer.name+' Fire on your Opponent!');
+    $('#bottom').html('<br><br>'+currentPlayer.name+', Fire on your Opponent!');
     $('.open').on('click', currentPlayer.fire);
 }
 var turn90 = function(){
@@ -190,6 +200,7 @@ var turn90 = function(){
   }
 }
 var placeShip = function(){
+
   $('.open').css('background-color',"");
   var position = $(this).attr('id');
   var xCoord = position[1];
@@ -270,6 +281,12 @@ var placeShip = function(){
 }
 
 var reset = function(){
+  $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
+  if(currentPlayer==player2){
+    $('html').css('background-color', 'darkred');
+    $('body').css('background-color', 'darkred');
+    $('h1').css('background-color', 'darkred');
+  }
   shipDirection = 'horizontal';
   clearBoard();
   $('#proceed').hide();
@@ -305,7 +322,6 @@ var shipSelector = function(){
   if(twoClicks){
     $placeHover.off();
     $placeHover.css('cursor', 'default');
-
   }
   twoClicks=true;
   var length = 0;
@@ -399,8 +415,8 @@ var generateBoard = function(){
 }
 
 var initializeGame = function(){
-
   currentPlayer = player1;
+    $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
   //build initial player boards
   for(var i=0; i<10; i++){
     temp=[];

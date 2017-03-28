@@ -35,3 +35,7 @@
 .overlay div:hover {
     color: #f1f1f1;
 }
+#instructions{
+  font-size: 18px;
+  color: white;
+}
