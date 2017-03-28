@@ -12,7 +12,7 @@
   /*cursor: pointer;*/
 }
 @keyframes spin {
-  100% {transform: rotate(360deg)}
+  100% {transform: scale(2,2)}
 }
 .newhit{
   background-color: darkred;
@@ -21,7 +21,19 @@
   float: left;
   border: 1px solid gray;
   transform-origin: center;
-  animation: spin .3s 5 linear;
+  animation: scale .3s 5 linear;
+}
+@keyframes scale {
+  100% {transform: scale(2,2)}
+}
+.newmiss{
+  background-color: white;
+  width: 48px;
+  height: 48px;
+  float: left;
+  border: 1px solid gray;
+  transform-origin: center;
+  animation: scale .3s 5 linear;
 }
 .hit{
   background-color: darkred;

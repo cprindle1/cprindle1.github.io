@@ -87,7 +87,7 @@ var ships = [
       $('.open').off();
       if(opponent.board[x][y].status==0){
         opponent.board[x][y].status=2;
-        $(this).attr('class', 'miss');
+        $(this).attr('class', 'newmiss');
         $('#bottom').html('<br><br>'+currentPlayer.name+', MISS!');
         // $(this).css('background-color', 'white');
       }else if(opponent.board[x][y].status==1){
@@ -369,6 +369,7 @@ var clearBoard = function(){
   $('.placed').text("");
   $('.placed').attr('class','open');
   $('.newhit').addClass('hit').removeClass('newhit');
+  $('.newmiss').addClass('miss').removeClass('newmiss');
   $('.hit').addClass('open').removeClass('hit');
   $('.miss').addClass('open').removeClass('miss');
 
