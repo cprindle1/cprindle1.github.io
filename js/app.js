@@ -275,10 +275,7 @@ var computerFire = function(){
   $('#proceed').on('click', takeTurns);
 if(currentPlayer.hits==17){
   $('#bottom').html('<br><br>'+currentPlayer.name+' Wins!');
-  $('.boardBorder').addClass('win');
-  $('.miss').addClass('win');
   $('.open').addClass('win');
-  $('.hit').addClass('win');
   $('.open').off();
   $('#proceed').hide();
   $('#proceed').off();
