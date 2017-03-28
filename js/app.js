@@ -5,8 +5,6 @@ $(function(){
   var $placeHover = $('.open');
   $placeHover.css('cursor', 'pointer');
   var $resetBoard =$('#resetBoard');
-
-
 //listeners====================================================
 $rotateShip.on('click', turn90);
 $shipSelect.on('click', shipSelector);
@@ -61,16 +59,11 @@ var ships = [
       this.board=[{status:0, ship:""}];
     }
     this.colorBoard = function(){
-      console.log('linear-gradient(90deg, darkred '+ (this.aHits/5)*100 +'%, gray '+ ((5-this.aHits)/5)*100 +'%)');
-
-// linear-gradient(90deg, darkred, darkred 40%, gray 40%, gray);
-
       $('#a_carrier').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.aHits/5)*100 +'%, gray '+ (this.aHits/5)*100 +'%, gray)');
       $('#battleship').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.bHits/4)*100 +'%, gray '+ (this.bHits/4)*100 +'%, gray)');
       $('#cruiser').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.cHits/3)*100 +'%, gray '+ (this.cHits/3)*100 +'%, gray)');
       $('#submarine').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.sHits/3)*100 +'%, gray '+ (this.sHits/3)*100 +'%, gray)');
       $('#destroyer').css('background-image', 'linear-gradient(90deg, darkred, darkred '+ (this.dHits/2)*100 +'%, gray '+ (this.dHits/2)*100 +'%, gray)');
-
       for(var i=0; i<opponent.board.length; i++){
         for(var j=0; j<opponent.board[i].length; j++){
           if(opponent.board[j][i].status==2){
@@ -91,8 +84,6 @@ var ships = [
       if($(this).attr('id').length==3){
         x=9;
       }
-
-
       $('.open').off();
       if(opponent.board[x][y].status==0){
         opponent.board[x][y].status=2;
@@ -103,7 +94,7 @@ var ships = [
         opponent.board[x][y].status=3;
         currentPlayer.hits++;
         $('#bottom').html('<br><br>'+currentPlayer.name+', HIT!');
-        $(this).attr('class', 'hit');
+        $(this).attr('class', 'newhit');
         for(var i=0; i<ships.length; i++){
           if(opponent.board[x][y].ship==ships[i].name){
             if(ships[i].name[0]=='a'){
@@ -143,7 +134,6 @@ var ships = [
         $('#bottom').html('<br><br>'+currentPlayer.name+' Wins!');
         $('.open').off();
         $('#proceed').hide();
-
       }
       if(currentPlayer==player1){
         currentPlayer=player2;
@@ -168,13 +158,11 @@ var takeTurns = function(){
     $('html').css('background-color', 'darkblue');
     $('body').css('background-color', 'darkblue');
     $('h1').css('background-color', 'darkblue');
-
   }else {
     opponent=player1;
     $('html').css('background-color', 'darkred');
     $('body').css('background-color', 'darkred');
     $('h1').css('background-color', 'darkred');
-
 
   }
     showShips();
@@ -200,7 +188,6 @@ var turn90 = function(){
   }
 }
 var placeShip = function(){
-
   $('.open').css('background-color',"");
   var position = $(this).attr('id');
   var xCoord = position[1];
@@ -208,7 +195,6 @@ var placeShip = function(){
   if(position[2]!=null){
     xCoord += position[2];
   }
-
   var canPlace = true;
   //check if can place ship at coordinates
   if(shipDirection=='horizontal'){
@@ -277,9 +263,7 @@ var placeShip = function(){
   twoClicks=false;
   $placeHover.off();
   $placeHover.css('cursor', 'default');
-
 }
-
 var reset = function(){
   $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
   if(currentPlayer==player2){
@@ -315,7 +299,6 @@ var completeReset = function(){
   currentPlayer=player1;
   showShips();
   initializeGame();
-
 }
 //allow user to select ship
 var shipSelector = function(){
@@ -377,16 +360,15 @@ var shipSelector = function(){
   $open.on('click', placeShip);
   $currentShipElm=$(this);
 }
-
 var showShips = function(){
   $('.ships').show();
 }
 
 var clearBoard = function(){
   //mark board letters/numbers/change class for formatting
-  console.log('clearing');
   $('.placed').text("");
   $('.placed').attr('class','open');
+  $('.newhit').addClass('hit').removeClass('newhit');
   $('.hit').addClass('open').removeClass('hit');
   $('.miss').addClass('open').removeClass('miss');
 
@@ -413,7 +395,6 @@ var generateBoard = function(){
     $letter.attr('class', 'boardBorder');
   }
 }
-
 var initializeGame = function(){
   currentPlayer = player1;
     $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
@@ -434,6 +415,5 @@ var initializeGame = function(){
     }
     player2.board[i]=temp.slice();
   }
-
   generateBoard();
 }
