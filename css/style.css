@@ -32,6 +32,10 @@
   transform-origin: center;
   animation: scale .3s 5 linear;
 }
+.win{
+    transform-origin: center;
+    animation: scale .3s 5 linear;
+}
 .hit{
   background-color: darkred;
   width: 48px;
