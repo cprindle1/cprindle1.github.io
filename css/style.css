@@ -11,7 +11,7 @@
   border: 1px solid gray;
   /*cursor: pointer;*/
 }
-@keyframes spin {
+@keyframes scale {
   100% {transform: scale(2,2)}
 }
 .newhit{
@@ -22,9 +22,6 @@
   border: 1px solid gray;
   transform-origin: center;
   animation: scale .3s 5 linear;
-}
-@keyframes scale {
-  100% {transform: scale(2,2)}
 }
 .newmiss{
   background-color: white;
