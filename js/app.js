@@ -101,12 +101,12 @@ var ships = [
       if(opponent.board[x][y].status==0){
         opponent.board[x][y].status=2;
         $(this).attr('class', 'newmiss');
-        $('#bottom').html('<br><br>'+currentPlayer.name+', MISS!');
+        $('#bottom').html('<br><br>'+currentPlayer.name+' Fires, MISS!');
         // $(this).css('background-color', 'white');
       }else if(opponent.board[x][y].status==1){
         opponent.board[x][y].status=3;
         currentPlayer.hits++;
-        $('#bottom').html('<br><br>'+currentPlayer.name+', HIT!');
+        $('#bottom').html('<br><br>'+currentPlayer.name+' Fires, HIT!');
         $(this).attr('class', 'newhit');
         for(var i=0; i<ships.length; i++){
           if(opponent.board[x][y].ship==ships[i].name){
@@ -177,17 +177,26 @@ var ships = [
 //end variable declaration==========================================
 function closeNav() {
     players = $(this).attr('id');
+    if(players == '1player'){
+      $('#p2').hide();
+    }
     $('#myNav').css('width', '0%');
     $('#myNav2').css('width', '100%');
 
 }
 function closeNav2() {
+    player1.name=$('#p1').val();
+    player2.name=$('#p2').val();
+    if(players=='1player'){
+      player2.name="Computer";
+    }
+    $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
     $('#myNav2').css('width', '0%');
 }
 var takeTurns = function(){
+  clearBoard();
   if(currentPlayer==player1 || (currentPlayer==player2 && players!='1player')){
     $('.open').css('cursor', 'pointer');
-    clearBoard();
     currentPlayer.colorBoard();
     if(currentPlayer==player1){
       opponent=player2;
@@ -226,25 +235,35 @@ var turn90 = function(){
 }
 var computerFire = function(){
   clearBoard();
+  $('html').css('background-color', 'darkred');
+  $('body').css('background-color', 'darkred');
+  $('h1').css('background-color', 'darkred');
   currentPlayer.colorBoard();
 
+  for(var i=0; i<opponent.board.length; i++){
+    for(var j=0; j<opponent.board[i].length; j++){
+      if(opponent.board[i][j].status==1){
+        $('#'+String.fromCharCode(j+98)+(i+1)).attr('class', 'placed');
+        $('#'+String.fromCharCode(j+98)+(i+1)).text(opponent.board[i][j].ship[0]);
+      }else if(opponent.board[i][j].status==3){
+        $('#'+String.fromCharCode(j+98)+(i+1)).text(opponent.board[i][j].ship[0]);
+      }
+    }
+  }
+
   $('#proceed').off();
-  console.log('computerFire');
   var shot=false;
   while(!shot){
-    console.log("firing");
     var x = Math.floor((Math.random()*10));
     var y = Math.floor((Math.random()*10));
     if(player1.board[x][y].status==1){
       player1.board[x][y].status=3;
       $('#bottom').text('Computer Fires - HIT!');
-      console.log('#'+String.fromCharCode(y+98)+(x+1));
       $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newhit');
       shot=true;
     }else if(player1.board[x][y].status==0){
       player1.board[x][y].status=2;
       $('#bottom').text('Computer Fires - MISS!');
-      console.log('#'+String.fromCharCode(y+98)+(x+1));
       $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newmiss');
       shot=true;
     }
@@ -401,7 +420,6 @@ var placeShip = function(){
   }
   if(currentPlayer.shipsPlaced==5){
     if(players=='1player'){
-      console.log('1player');
       $('#rotateShip').hide();
       $('#proceed').off('');
       $('#proceed').on('click', computerPlace);
@@ -509,13 +527,13 @@ var showShips = function(){
 
 var clearBoard = function(){
   //mark board letters/numbers/change class for formatting
-  $('.placed').text("");
+  $('.placed').text('');
   $('.placed').attr('class','open');
   $('.newhit').addClass('hit').removeClass('newhit');
   $('.newmiss').addClass('miss').removeClass('newmiss');
   $('.hit').addClass('open').removeClass('hit');
   $('.miss').addClass('open').removeClass('miss');
-
+  $('.open').text('');
 }
 var generateBoard = function(){
   //generate divs for board spaces.
