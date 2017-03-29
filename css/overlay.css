@@ -1,6 +1,6 @@
 .overlay {
     height: 100%;
-    width: 100%;
+    width: 0%;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -38,4 +38,52 @@
 #instructions{
   font-size: 18px;
   color: white;
+}
+.overlay2 {
+    height: 100%;
+    width: 0%;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: gray;
+    background-color: rgba(128,128,128, 0.7);
+    overflow: hidden;
+    transition: 0.4s;
+}
+.overlay2-content {
+    position: relative;
+    top: 25%; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px;
+}
+/* The navigation links inside the overlay */
+.overlay2 div {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block; /* Display block instead of inline */
+    transition: 0.5s; /* Transition effects on hover (color) */
+}
+.overlay2 h3, h4{
+  color: #f1f1f1;
+  text-transform: uppercase;
+  text-shadow: 5px 2px black;
+}
+/* When you mouse over the navigation links, change their color */
+.overlay2 div:hover {
+    color: #f1f1f1;
+}
+#p1, #p2{
+  font-size: 18px;
+  color: darkblue;
+  background: white;
+}
+#submit{
+  font-size: 12px;
+  background: white;
+  color: darkblue;
+  border-radius: 5px;
 }

@@ -1,4 +1,5 @@
 $(function(){
+  $('#myNav').css('width', '100%');
   var $shipSelect = $('.ships');
   var $currentShipElm;
   var $rotateShip = $('#rotateShip');
@@ -6,6 +7,7 @@ $(function(){
   var $resetBoard =$('#resetBoard');
   var $playerSelect1=$('#1player');
   var $playerSelect2=$('#2player');
+  var $submit=$('#submit');
 
 
 //listeners====================================================
@@ -17,6 +19,8 @@ $playerSelect1.on('click', closeNav);
 $playerSelect1.css('cursor', 'pointer');
 $playerSelect2.on('click', closeNav);
 $playerSelect2.css('cursor', 'pointer');
+$submit.on('click', closeNav2);
+
 initializeGame();
 })
 //variable declaration==========================================
@@ -173,7 +177,12 @@ var ships = [
 //end variable declaration==========================================
 function closeNav() {
     players = $(this).attr('id');
-    document.getElementById("myNav").style.width = "0%";
+    $('#myNav').css('width', '0%');
+    $('#myNav2').css('width', '100%');
+
+}
+function closeNav2() {
+    $('#myNav2').css('width', '0%');
 }
 var takeTurns = function(){
   if(currentPlayer==player1 || (currentPlayer==player2 && players!='1player')){
