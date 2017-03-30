@@ -20,7 +20,6 @@ $playerSelect1.css('cursor', 'pointer');
 $playerSelect2.on('click', closeNav);
 $playerSelect2.css('cursor', 'pointer');
 $submit.on('click', closeNav2);
-
 initializeGame();
 })
 //variable declaration==========================================
@@ -47,6 +46,27 @@ var ships = [
     name: 'destroyer',
     length: 2
   }];
+  var huntingShips = [
+    {
+      name: 'a_carrier',
+      length: 5
+    },
+    {
+      name: 'battleship',
+      length: 4
+    },
+    {
+      name: 'cruiser',
+      length: 3
+    },
+    {
+      name: 'submarine',
+      length: 3
+    },
+    {
+      name: 'destroyer',
+      length: 2
+    }];
   var currentShip = ships[0];
   var twoClicks = false;
   var player = function(name){
@@ -172,9 +192,16 @@ var ships = [
   }
   var player1 = new player('player1');
   var player2 = new player('player2');
+  var trackBoard = new player('tracker');
+  var probBoard=[];
   var currentPlayer = player1;
   var opponent = player2;
+  var difficulty='easy';
+  var highX=0;
+  var highY=0;
+  var highestProb=0;
 //end variable declaration==========================================
+
 function closeNav() {
     players = $(this).attr('id');
     if(players == '1player'){
@@ -254,15 +281,30 @@ var computerFire = function(){
   $('#proceed').off();
   var shot=false;
   while(!shot){
-    var x = Math.floor((Math.random()*10));
-    var y = Math.floor((Math.random()*10));
+    var x=0;
+    var y=0;
+    if(difficulty=='easy'){
+      x=0;
+      y=0;
+      mapProb();
+      x=highX;
+      y=highY;
+      console.log(x, y);
+    }else{
+      x = Math.floor((Math.random()*10));
+      y = Math.floor((Math.random()*10));
+    }
     if(player1.board[x][y].status==1){
       player1.board[x][y].status=3;
+      trackBoard.board[x][y].status=3;
+      trackBoard.board[x][y].ship=player1.board[x][y].ship;
+      currentPlayer.hits++;
       $('#bottom').text('Computer Fires - HIT!');
       $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newhit');
       shot=true;
     }else if(player1.board[x][y].status==0){
       player1.board[x][y].status=2;
+      trackBoard.board[x][y].status=2;
       $('#bottom').text('Computer Fires - MISS!');
       $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newmiss');
       shot=true;
@@ -271,29 +313,99 @@ var computerFire = function(){
   for(var i=0; i<ships.length; i++){
     if(opponent.board[x][y].ship==ships[i].name){
       if(ships[i].name[0]=='a'){
+        console.log(opponent.board[x][y].ship[0]);
         opponent.aHits++;
         if(opponent.aHits==5){
-          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Aircraft Carrier!");
+          $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Aircraft Carrier!");
+          for(var z=0; z<huntingShips.length; z++){
+            if(huntingShips[z].name[0]=='a'){
+              console.log('splice1');
+              huntingShips.splice(z,1);
+            }
+          }
+          for(var a=0; a<opponent.board.length; a++){
+            for(var b=0; b<opponent.board.length; b++){
+              if(opponent.board[a][b].ship[0]=='a'){
+                trackBoard.board[a][b].status=4;
+              }
+            }
+          }
         }
       }else if(ships[i].name[0]=='b'){
+        console.log(opponent.board[x][y].ship[0]);
         opponent.bHits++;
         if(opponent.bHits==4){
-          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Battleship!");
+          $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Battleship!");
+          for(var z=0; z<huntingShips.length; z++){
+            if(huntingShips[z].name[0]=='b'){
+              console.log('splice2');
+              huntingShips.splice(z,1);
+            }
+          }
+          for(var a=0; a<opponent.board.length; a++){
+            for(var b=0; b<opponent.board.length; b++){
+              if(opponent.board[a][b].ship[0]=='b'){
+                trackBoard.board[a][b].status=4;
+              }
+            }
+          }
         }
       }else if(ships[i].name[0]=='c'){
+        console.log(opponent.board[x][y].ship[0]);
         opponent.cHits++;
         if(opponent.cHits==3){
-          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Cruiser!");
+          $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Cruiser!");
+          for(var z=0; z<huntingShips.length; z++){
+            if(huntingShips[z].name[0]=='c'){
+              console.log('splice3');
+              huntingShips.splice(z,1);
+            }
+          }
+          for(var a=0; a<opponent.board.length; a++){
+            for(var b=0; b<opponent.board.length; b++){
+              if(opponent.board[a][b].ship[0]=='c'){
+                trackBoard.board[a][b].status=4;
+              }
+            }
+          }
         }
       }else if(ships[i].name[0]=='d'){
+        console.log(opponent.board[x][y].ship[0]);
         opponent.dHits++;
         if(opponent.dHits==2){
-          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Destroyer!");
+          $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Destroyer!");
+          for(var z=0; z<huntingShips.length; z++){
+            if(huntingShips[z].name[0]=='d'){
+              console.log('splice5');
+              huntingShips.splice(z,1);
+            }
+          }
+          for(var a=0; a<opponent.board.length; a++){
+            for(var b=0; b<opponent.board.length; b++){
+              if(opponent.board[a][b].ship[0]=='d'){
+                trackBoard.board[a][b].status=4;
+              }
+            }
+          }
         }
       }else if(ships[i].name[0]=='s'){
+        console.log(opponent.board[x][y].ship[0]);
         opponent.sHits++;
         if(opponent.sHits==3){
-          $('#bottom').html('<br><br> You sunk '+opponent.name+"'s Submarine!");
+          $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Submarine!");
+          for(var z=0; z<huntingShips.length; z++){
+            if(huntingShips[z].name[0]=='s'){
+              huntingShips.splice(z,1);
+              console.log('splice4');
+            }
+          }
+          for(var a=0; a<opponent.board.length; a++){
+            for(var b=0; b<opponent.board.length; b++){
+              if(opponent.board[a][b].ship[0]=='s'){
+                trackBoard.board[a][b].status=4;
+              }
+            }
+          }
         }
       }
     }
@@ -561,6 +673,7 @@ var initializeGame = function(){
   currentPlayer = player1;
     $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
   //build initial player boards
+
   for(var i=0; i<10; i++){
     temp=[];
     for(var j=0; j<10; j++){
@@ -577,5 +690,157 @@ var initializeGame = function(){
     }
     player2.board[i]=temp.slice();
   }
+  for(var i=0; i<10; i++){
+    temp=[];
+    for(var j=0; j<10; j++){
+      temp[j]={status:0,
+                ship:""}
+    }
+    trackBoard.board[i]=temp.slice();
+  }
+
   generateBoard();
+  generateBoard2();
+
+}
+
+
+
+
+var mapProb = function(){
+  for(var i=0; i<10; i++){
+    temp=[];
+    for(var j=0; j<10; j++){
+      temp[j]=0;
+    }
+    probBoard[i]=temp.slice();
+  }
+  for(var l=0; l<huntingShips.length; l++){
+    for(var x=0; x<probBoard.length; x++){
+      for(var y=0; y<probBoard.length; y++){
+        var canPlace=true;
+        for(var s=0; s<huntingShips[l].length; s++){
+          if(x+huntingShips[l].length-1>=probBoard.length){
+            canPlace=false;
+          }else if(trackBoard.board[x+s][y].status!=0 && trackBoard.board[x+s][y].status!=3){
+            if(trackBoard.board[x+s][y].status==4){
+              probBoard[x+s][y]=-500;
+            }
+            canPlace=false;
+          }else if(trackBoard.board[x+s][y].status==3){
+            probBoard[x+s][y]=-500;
+            if(x+s+1<probBoard.length-1){
+              if(trackBoard.board[x+s+1][y].status==0){
+                probBoard[x+s+1][y]+=25;
+              }
+            }
+            if(y+1<probBoard.length-1){
+              if(trackBoard.board[x+s][y+1].status==0){
+                probBoard[x+s][y+1]+=25;
+              }
+            }
+            if(x+s-1>=0){
+              if(trackBoard.board[x+s-1][y].status==0){
+                probBoard[x+s-1][y]+=25;
+              }
+            }
+            if(y-1>=0){
+              if(trackBoard.board[x+s][y-1].status==0){
+                probBoard[x+s][y-1]+=25;
+              }
+            }
+          }
+        }
+        if(canPlace){
+          for(var ix=0; ix<huntingShips[l].length; ix++){
+            probBoard[x+ix][y]++;
+          }
+        }
+        canPlace=true;
+        for(var s=0; s<huntingShips[l].length; s++){
+          if(y+huntingShips[l].length-1>=probBoard.length){
+            canPlace=false;
+          }else if(trackBoard.board[x][y+s].status !=0 && trackBoard.board[x][y+s].status!=3){
+            if(trackBoard.board[x][y+s].status==4){
+              probBoard[x][y+s]=-500;
+            }
+            canPlace=false;
+          }else if(trackBoard.board[x][y+s].status==3){
+            probBoard[x][y+s]=-500;
+            if(x+1<probBoard.length-1){
+              if(trackBoard.board[x+1][y+s].status==0){
+                probBoard[x+1][y+s]+=25;
+              }
+            }
+            if(y+s+1<probBoard.length-1){
+              if(trackBoard.board[x][y+s+1].status==0){
+                probBoard[x][y+s+1]+=25;
+              }
+            }
+            if(x-1>=0){
+              if(trackBoard.board[x-1][y+s].status==0){
+                probBoard[x-1][y+s]+=25;
+              }
+            }
+            if(y+s-1>=0){
+              if(trackBoard.board[x][y+s-1].status==0){
+                probBoard[x][y+s-1]+=25;
+              }
+            }
+          }
+        }
+        if(canPlace){
+          for(var iy=0; iy<huntingShips[l].length; iy++){
+            probBoard[x][y+iy]++;
+          }
+
+        }
+      }
+
+    }
+  }
+
+for(var i=0; i<probBoard.length; i++){
+  for(var j=0; j<probBoard[i].length; j++){
+    $('#'+i+'-'+j).text(probBoard[i][j]);
+  }
+}
+
+  highestProb=0;
+  highX=0;
+  highY=0;
+  for(var i=0; i<probBoard.length; i++){
+    for(var j=0; j<probBoard[i].length; j++){
+      console.log(probBoard[i][j]);
+      if(parseInt(probBoard[i][j])>highestProb){
+        console.log("BAM");
+        highestProb=probBoard[i][j];
+        highX=i;
+        highY=j;
+      }
+    }
+  }
+  console.log("highx: "+highX);
+  console.log("highy: "+highY);
+  console.log(highestProb);
+  for(var i=0; i<probBoard.length; i++){
+    for(var j=0; j<probBoard[i].length; j++){
+      $('#'+j+'-'+i).text(probBoard[i][j]);
+    }
+  }
+
+}
+
+
+
+var generateBoard2 = function(){
+  //generate divs for board spaces.
+  for(var i=0; i<10; i++){
+    for(var j=0; j<10; j++){
+      var $space = $('<div>').addClass('open');
+      $space.attr('id',(i+'-'+j));
+      $('#board2').append($space);
+    }
+  }
+  //mark board letters/numbers/change class for formatting
 }
