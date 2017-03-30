@@ -1,5 +1,5 @@
 $(function(){
-  $('#myNav').css('width', '100%');
+  $('#playerNav').css('width', '100%');
   var $shipSelect = $('.ships');
   var $currentShipElm;
   var $rotateShip = $('#rotateShip');
@@ -17,9 +17,9 @@ $placeHover.css('cursor', 'pointer');
 $rotateShip.on('click', turn90);
 $shipSelect.on('click', shipSelector);
 $resetBoard.on('click', completeReset);
-$playerSelect1.on('click', closeNav);
+$playerSelect1.on('click', closeNav1);
 $playerSelect1.css('cursor', 'pointer');
-$playerSelect2.on('click', closeNav);
+$playerSelect2.on('click', closeNav1);
 $playerSelect2.css('cursor', 'pointer');
 $easy.on('click', closeNav3);
 $easy.css('cursor', 'pointer');
@@ -211,13 +211,13 @@ var ships = [
   var compHit=false;
 //end variable declaration==========================================
 
-function closeNav() {
+function closeNav1() {
     players = $(this).attr('id');
     if(players == '1player'){
       $('#p2').hide();
     }
-    $('#myNav').css('width', '0%');
-    $('#myNav2').css('width', '100%');
+    $('#playerNav').css('width', '0%');
+    $('#nameNav').css('width', '100%');
 
 }
 function closeNav2() {
@@ -225,14 +225,14 @@ function closeNav2() {
     player2.name=$('#p2').val();
     if(players=='1player'){
       player2.name="Computer";
-      $('#myNav3').css('width', '100%');
+      $('#difficultyNav').css('width', '100%');
     }
     $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
-    $('#myNav2').css('width', '0%');
+    $('#nameNav').css('width', '0%');
 }
 function closeNav3() {
     difficulty=$(this).attr('id');
-    $('#myNav3').css('width', '0%');
+    $('#difficultyNav').css('width', '0%');
 }
 var takeTurns = function(){
   clearBoard();
