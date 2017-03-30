@@ -8,6 +8,7 @@ $(function(){
   var $playerSelect1=$('#1player');
   var $playerSelect2=$('#2player');
   var $easy = $('#easy');
+  var $medium = $('#medium');
   var $hard = $('#hard');
   var $submit=$('#submit');
 
@@ -23,6 +24,8 @@ $playerSelect2.on('click', closeNav1);
 $playerSelect2.css('cursor', 'pointer');
 $easy.on('click', closeNav3);
 $easy.css('cursor', 'pointer');
+$medium.on('click', closeNav3);
+$medium.css('cursor', 'pointer');
 $hard.on('click', closeNav3);
 $hard.css('cursor', 'pointer');
 $submit.on('click', closeNav2);
@@ -297,12 +300,12 @@ var computerFire = function(){
   while(!shot){
     var x=0;
     var y=0;
-    if(difficulty=='hard'){
+    if(difficulty=='hard' || difficulty=='medium'){
       x=0;
       y=0;
       if(compShots<5 && !compHit){
-        x = Math.floor((Math.random()*5)*2);
-        y = Math.floor((Math.random()*5)*2);
+        x = Math.floor(Math.random()*5)*2;
+        y = Math.floor(Math.random()*5)*2;
       }else{
         mapProb();
         x=highX;
@@ -333,13 +336,11 @@ var computerFire = function(){
   for(var i=0; i<ships.length; i++){
     if(opponent.board[x][y].ship==ships[i].name){
       if(ships[i].name[0]=='a'){
-        console.log(opponent.board[x][y].ship[0]);
         opponent.aHits++;
         if(opponent.aHits==5){
           $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Aircraft Carrier!");
           for(var z=0; z<huntingShips.length; z++){
             if(huntingShips[z].name[0]=='a'){
-              console.log('splice1');
               huntingShips.splice(z,1);
             }
           }
@@ -352,13 +353,11 @@ var computerFire = function(){
           }
         }
       }else if(ships[i].name[0]=='b'){
-        console.log(opponent.board[x][y].ship[0]);
         opponent.bHits++;
         if(opponent.bHits==4){
           $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Battleship!");
           for(var z=0; z<huntingShips.length; z++){
             if(huntingShips[z].name[0]=='b'){
-              console.log('splice2');
               huntingShips.splice(z,1);
             }
           }
@@ -371,13 +370,11 @@ var computerFire = function(){
           }
         }
       }else if(ships[i].name[0]=='c'){
-        console.log(opponent.board[x][y].ship[0]);
         opponent.cHits++;
         if(opponent.cHits==3){
           $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Cruiser!");
           for(var z=0; z<huntingShips.length; z++){
             if(huntingShips[z].name[0]=='c'){
-              console.log('splice3');
               huntingShips.splice(z,1);
             }
           }
@@ -390,13 +387,11 @@ var computerFire = function(){
           }
         }
       }else if(ships[i].name[0]=='d'){
-        console.log(opponent.board[x][y].ship[0]);
         opponent.dHits++;
         if(opponent.dHits==2){
           $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Destroyer!");
           for(var z=0; z<huntingShips.length; z++){
             if(huntingShips[z].name[0]=='d'){
-              console.log('splice5');
               huntingShips.splice(z,1);
             }
           }
@@ -409,14 +404,12 @@ var computerFire = function(){
           }
         }
       }else if(ships[i].name[0]=='s'){
-        console.log(opponent.board[x][y].ship[0]);
         opponent.sHits++;
         if(opponent.sHits==3){
           $('#bottom').html('<br><br> Computer sunk '+opponent.name+"'s Submarine!");
           for(var z=0; z<huntingShips.length; z++){
             if(huntingShips[z].name[0]=='s'){
               huntingShips.splice(z,1);
-              console.log('splice4');
             }
           }
           for(var a=0; a<opponent.board.length; a++){
@@ -749,24 +742,73 @@ var mapProb = function(){
             canPlace=false;
           }else if(trackBoard.board[x+s][y].status==3){
             probBoard[x+s][y]=-500;
-            if(x+s+1<probBoard.length-1){
+            if(x+s+1<probBoard.length){
               if(trackBoard.board[x+s+1][y].status==0){
                 probBoard[x+s+1][y]+=25;
+
+                if(difficulty=='hard'){
+                for(var trackBack=0; trackBack<x+s; trackBack++){
+                  if(x+s-trackBack<0){
+                    break;
+                  }else if(trackBoard.board[x+s-trackBack][y].status!=3){
+                    break;
+                  }else{
+                    console.log('trackBack');
+                    probBoard[x+s+1][y]+=25;
+                  }
+                }
+              }
               }
             }
-            if(y+1<probBoard.length-1){
+            if(y+1<probBoard.length){
               if(trackBoard.board[x+s][y+1].status==0){
                 probBoard[x+s][y+1]+=25;
+                if(difficulty=='hard'){
+                  for(var trackBack=0; trackBack<x+s; trackBack++){
+                    if(y-trackBack<0){
+                      break;
+                    }else if(trackBoard.board[x+s][y-trackBack].status!=3){
+                      break;
+                    }else{
+                      console.log('trackBack');
+                      probBoard[x+s][y+1]+=25;
+                    }
+                  }
+                }
+
               }
             }
             if(x+s-1>=0){
               if(trackBoard.board[x+s-1][y].status==0){
                 probBoard[x+s-1][y]+=25;
+                if(difficulty=='hard'){
+                for(var trackBack=0; trackBack<x+s; trackBack++){
+                  if(x+s+trackBack>=probBoard.length){
+                    break;
+                  }else if(trackBoard.board[x+s+trackBack][y].status!=3){
+                    break;
+                  }else{
+                    console.log('trackBack');
+                    probBoard[x+s-1][y]+=25;
+                  }
+                }
+              }
               }
             }
             if(y-1>=0){
               if(trackBoard.board[x+s][y-1].status==0){
                 probBoard[x+s][y-1]+=25;
+                if(difficulty=='hard'){
+                for(var trackBack=0; trackBack<x+s; trackBack++){
+                  if(y+trackBack>=probBoard.length){
+                    break;
+                  }else if(trackBoard.board[x+s][y+trackBack].status!=3){
+                    break;
+                  }else{
+                    probBoard[x+s][y-1]+=25;
+                  }
+                }
+              }
               }
             }
           }
@@ -787,12 +829,12 @@ var mapProb = function(){
             canPlace=false;
           }else if(trackBoard.board[x][y+s].status==3){
             probBoard[x][y+s]=-500;
-            if(x+1<probBoard.length-1){
+            if(x+1<probBoard.length){
               if(trackBoard.board[x+1][y+s].status==0){
                 probBoard[x+1][y+s]+=25;
               }
             }
-            if(y+s+1<probBoard.length-1){
+            if(y+s+1<probBoard.length){
               if(trackBoard.board[x][y+s+1].status==0){
                 probBoard[x][y+s+1]+=25;
               }
@@ -831,18 +873,13 @@ for(var i=0; i<probBoard.length; i++){
   highY=0;
   for(var i=0; i<probBoard.length; i++){
     for(var j=0; j<probBoard[i].length; j++){
-      console.log(probBoard[i][j]);
       if(parseInt(probBoard[i][j])>highestProb){
-        console.log("BAM");
         highestProb=probBoard[i][j];
         highX=i;
         highY=j;
       }
     }
   }
-  console.log("highx: "+highX);
-  console.log("highy: "+highY);
-  console.log(highestProb);
   for(var i=0; i<probBoard.length; i++){
     for(var j=0; j<probBoard[i].length; j++){
       $('#'+j+'-'+i).text(probBoard[i][j]);
@@ -850,9 +887,6 @@ for(var i=0; i<probBoard.length; i++){
   }
 
 }
-
-
-
 var generateBoard2 = function(){
   //generate divs for board spaces.
   for(var i=0; i<10; i++){
