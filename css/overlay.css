@@ -87,3 +87,40 @@
   color: darkblue;
   border-radius: 5px;
 }
+.overlay3 {
+    height: 100%;
+    width: 0%;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: gray;
+    background-color: rgba(128,128,128, 0.7);
+    overflow: hidden;
+    transition: 0.4s;
+}
+.overlay3-content {
+    position: relative;
+    top: 25%; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px;
+}
+/* The navigation links inside the overlay */
+.overlay3 div {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: block; /* Display block instead of inline */
+    transition: 0.5s; /* Transition effects on hover (color) */
+}
+.overlay3 h3, h4{
+  color: #f1f1f1;
+  text-transform: uppercase;
+  text-shadow: 5px 2px black;
+}
+/* When you mouse over the navigation links, change their color */
+.overlay3 div:hover {
+    color: #f1f1f1;
+}

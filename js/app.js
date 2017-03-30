@@ -7,6 +7,8 @@ $(function(){
   var $resetBoard =$('#resetBoard');
   var $playerSelect1=$('#1player');
   var $playerSelect2=$('#2player');
+  var $easy = $('#easy');
+  var $hard = $('#hard');
   var $submit=$('#submit');
 
 
@@ -19,7 +21,12 @@ $playerSelect1.on('click', closeNav);
 $playerSelect1.css('cursor', 'pointer');
 $playerSelect2.on('click', closeNav);
 $playerSelect2.css('cursor', 'pointer');
+$easy.on('click', closeNav3);
+$easy.css('cursor', 'pointer');
+$hard.on('click', closeNav3);
+$hard.css('cursor', 'pointer');
 $submit.on('click', closeNav2);
+
 initializeGame();
 })
 //variable declaration==========================================
@@ -200,6 +207,8 @@ var ships = [
   var highX=0;
   var highY=0;
   var highestProb=0;
+  var compShots=0;
+  var compHit=false;
 //end variable declaration==========================================
 
 function closeNav() {
@@ -216,9 +225,14 @@ function closeNav2() {
     player2.name=$('#p2').val();
     if(players=='1player'){
       player2.name="Computer";
+      $('#myNav3').css('width', '100%');
     }
     $('#bottom').html("<br><br>"+currentPlayer.name+", place your ships on the board.  You can place them horizontally or vertically.")
     $('#myNav2').css('width', '0%');
+}
+function closeNav3() {
+    difficulty=$(this).attr('id');
+    $('#myNav3').css('width', '0%');
 }
 var takeTurns = function(){
   clearBoard();
@@ -283,14 +297,19 @@ var computerFire = function(){
   while(!shot){
     var x=0;
     var y=0;
-    if(difficulty=='easy'){
+    if(difficulty=='hard'){
       x=0;
       y=0;
-      mapProb();
-      x=highX;
-      y=highY;
-      console.log(x, y);
-    }else{
+      if(compShots<5 && !compHit){
+        x = Math.floor((Math.random()*5)*2);
+        y = Math.floor((Math.random()*5)*2);
+      }else{
+        mapProb();
+        x=highX;
+        y=highY;
+      }
+      compShots++;
+    }else if(difficulty=='easy'){
       x = Math.floor((Math.random()*10));
       y = Math.floor((Math.random()*10));
     }
@@ -302,6 +321,7 @@ var computerFire = function(){
       $('#bottom').text('Computer Fires - HIT!');
       $('#'+String.fromCharCode(y+98)+(x+1)).attr('class', 'newhit');
       shot=true;
+      compHit++;
     }else if(player1.board[x][y].status==0){
       player1.board[x][y].status=2;
       trackBoard.board[x][y].status=2;
